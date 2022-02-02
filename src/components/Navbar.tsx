@@ -357,11 +357,7 @@ export default function NavBar(props: NavBarProps) {
 						</IconButton>
 						<Box sx={{ display: { xs: "none", sm: "block" } }}>
 							<Link to="/">
-								<img
-									style={{ width: "70px", marginLeft: "auto", marginRight: "auto" }}
-									alt="logo"
-									src={"logo.png"}
-								/>
+								<img style={{ width: "70px", marginLeft: "auto", marginRight: "auto" }} alt="logo" src={"logo.png"} />
 							</Link>
 						</Box>
 
@@ -376,15 +372,13 @@ export default function NavBar(props: NavBarProps) {
             </Search> */}
 						<Box sx={{ display: { xs: "none", sm: "none", md: "block", width: "100%" } }}>
 							{TopNavLinks.map((link, index: number) => (
-								<NavBarLink
-									activeStyle={{ borderBottom: "solid #F44336 5px" }}
-									exact={true}
-									key={index}
-									to={link.link}
-								>
+								<NavBarLink activeStyle={{ borderBottom: "solid #F44336 5px" }} exact={true} key={index} to={link.link}>
 									{link.text}
 								</NavBarLink>
 							))}
+							<NavBarLink activeStyle={{ borderBottom: "solid #F44336 5px" }} exact={true} key="1000" to="you-can-help">
+								YOU CAN HELP
+							</NavBarLink>
 							<NavBarLink onClick={handleMoreMenuOpen} to="#" activeStyle={{ background: "transparent" }}>
 								MORE <KeyboardArrowDownIcon style={{ position: "absolute" }} />
 							</NavBarLink>
@@ -400,24 +394,12 @@ export default function NavBar(props: NavBarProps) {
 							>
 								{TopNavMoreLinks.map((link, index) => (
 									<MenuItem style={{ width: "100%" }} key={index} onClick={handleMoreMenuClose}>
-										<MenuLink
-											activeStyle={{ background: "transparent" }}
-											style={{ color: "#000", width: "100%" }}
-											to={link?.link}
-										>
+										<MenuLink activeStyle={{ background: "transparent" }} style={{ color: "#000", width: "100%" }} to={link?.link}>
 											{link?.text}
 										</MenuLink>
 									</MenuItem>
 								))}
 							</Menu>
-							<NavBarLink
-								activeStyle={{ borderBottom: "solid #F44336 5px" }}
-								exact={true}
-								key="1000"
-								to="you-can-help"
-							>
-								YOU CAN HELP
-							</NavBarLink>
 						</Box>
 						<Box sx={{ flexGrow: 1 }} />
 						{!auth.confirmAuth() && !auth.confirmAdminAuth() && (
