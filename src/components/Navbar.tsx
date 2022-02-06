@@ -25,6 +25,7 @@ import auth from "../utilities/Auth";
 import { Button, Fab, useScrollTrigger, Zoom } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { setInterval } from "timers";
 
 export const Search = styled("div")(({ theme }) => ({
 	position: "relative",
@@ -143,6 +144,7 @@ export default function NavBar(props: NavBarProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [navMoreEl, setNavMoreEl] = React.useState<null | HTMLElement>(null);
+	const [logged, setLogged] = React.useState<boolean>(false);
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -331,6 +333,12 @@ export default function NavBar(props: NavBarProps) {
 	);
 
 	const container = window !== undefined ? () => window().document.body : undefined;
+	React.useEffect(() => {
+		setInterval(() => {
+			if (localStorage.getItem("app_id")) setLogged(true);
+			else setLogged(false);
+		}, 500);
+	}, []);
 
 	return (
 		<React.Fragment>
@@ -345,16 +353,18 @@ export default function NavBar(props: NavBarProps) {
 					elevation={0}
 				>
 					<Toolbar id="back-to-top-anchor">
-						<IconButton
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-label="open drawer"
-							onClick={handleDrawerToggle}
-							sx={{ mr: 2, display: { lg: "none", md: "none" } }}
-						>
-							<MenuIcon />
-						</IconButton>
+						{logged ? (
+							<IconButton
+								size="large"
+								edge="start"
+								color="inherit"
+								aria-label="open drawer"
+								onClick={handleDrawerToggle}
+								sx={{ mr: 2, display: { lg: "none", md: "none" } }}
+							>
+								<MenuIcon />
+							</IconButton>
+						) : null}
 						<Box sx={{ display: { xs: "none", sm: "block" } }}>
 							<Link to="/">
 								<img style={{ width: "70px", marginLeft: "auto", marginRight: "auto" }} alt="logo" src={"logo.png"} />
