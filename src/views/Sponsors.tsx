@@ -291,19 +291,16 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 				if (res.data?.length === 0) {
 					setModalContent(
 						<div>
-							Your school is currently not protected by BullyVaxx. All that is needed for your school to
-							become protected is a individual or business to step up and become the sponsor for the school.
-							Real estate agents, new and used auto dealerships, personal injury attorneys, restaurants and
-							church youth groups all make great sponsors for BullyVaxx. Please contact any of these
-							businesses/groups that you are connected to and get your school protected. To sponsor a school
-							please click <Link to="/sponsors">HERE</Link>.
+							Your school is currently not protected by BullyVaxx. All that is needed for your school to become protected is a individual or business
+							to step up and become the sponsor for the school. Real estate agents, new and used auto dealerships, personal injury attorneys,
+							restaurants and church youth groups all make great sponsors for BullyVaxx. Please contact any of these businesses/groups that you are
+							connected to and get your school protected. To sponsor a school please click <Link to="/sponsors">HERE</Link>.
 						</div>
 					);
 				} else {
 					setModalContent(
 						<div>
-							Yes, your school is protected by BullyVaxx, to file a bully or threat report please click{" "}
-							<Link to="/login">HERE</Link>.
+							Yes, your school is protected by BullyVaxx, to file a bully or threat report please click <Link to="/login">HERE</Link>.
 						</div>
 					);
 				}
@@ -348,7 +345,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 							<Grid item sm={6} xs={12}>
 								<iframe
 									style={{ marginBottom: "20px" }}
-									src="https://drive.google.com/file/d/1iKCArPFREazQhPIEy1lJTGGmzZFRX-ny/preview"
+									src="https://drive.google.com/file/d/10vGiNyn4V1FtiroeBwtVP2sq2OCIIVEv/preview"
 									width="100%"
 									height="480"
 									allow="autoplay"
@@ -397,19 +394,10 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 						<Typography variant="h4">Become a sponsor</Typography>
 
 						{!canCheckout && (
-							<Form
-								initialValues={formSchema}
-								buttonText="checkout"
-								buttonSize="medium"
-								submit={createUser}
-							>
+							<Form initialValues={formSchema} buttonText="checkout" buttonSize="medium" submit={createUser}>
 								<FormFieldWrapper>
 									Sponsor type: <br />
-									<FRadioButton
-										selectionChange={handleSponsorTypeSelection}
-										name="type"
-										options={["Individual", "Business or Group"]}
-									/>
+									<FRadioButton selectionChange={handleSponsorTypeSelection} name="type" options={["Individual", "Business or Group"]} />
 								</FormFieldWrapper>
 								{sponsorType === "Individual" && (
 									<div>
@@ -425,15 +413,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 											/>
 										</FormFieldWrapper>
 										<FormFieldWrapper>
-											<InputField
-												size="small"
-												color="secondary"
-												fullWidth={true}
-												name="last_name"
-												type="text"
-												variant="outlined"
-												label="Last Name"
-											/>
+											<InputField size="small" color="secondary" fullWidth={true} name="last_name" type="text" variant="outlined" label="Last Name" />
 										</FormFieldWrapper>
 									</div>
 								)}
@@ -451,15 +431,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 									</FormFieldWrapper>
 								)}
 								<FormFieldWrapper>
-									<InputField
-										size="small"
-										color="secondary"
-										fullWidth={true}
-										name="email"
-										type="email"
-										variant="outlined"
-										label="Email"
-									/>
+									<InputField size="small" color="secondary" fullWidth={true} name="email" type="email" variant="outlined" label="Email" />
 								</FormFieldWrapper>
 								{/* <FormFieldWrapper>
                                 <InputField size="small" color="secondary" selectionChange={handleSelection} isSelect={true} fullWidth={true} name="state" selectOptions={states} variant="outlined" label="Select your state" />
@@ -503,9 +475,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 						)}
 						{canCheckout && (
 							<div>
-								<Typography variant="h5">
-									Total: ${sponsorshipPrice * userDetails?.quantity}
-								</Typography>
+								<Typography variant="h5">Total: ${sponsorshipPrice * userDetails?.quantity}</Typography>
 								<PayPalButton
 									amount={sponsorshipPrice * userDetails?.quantity}
 									// shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"

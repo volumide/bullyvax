@@ -81,26 +81,20 @@ const Home: FunctionComponent<HomeProps> = () => {
 			</Backdrop>
 
 			<Box component={"div"} sx={{ width: "100%", position: "relative", minHeight: "40vh" }}>
-				<img
-					style={{ display: "block", opacity: 0.7, width: "90%", marginLeft: "auto", marginRight: "auto" }}
-					alt="banner"
-					src={"banner.jpeg"}
-				/>
+				<img style={{ display: "block", opacity: 0.7, width: "90%", marginLeft: "auto", marginRight: "auto" }} alt="banner" src={"banner.jpeg"} />
 				<div style={{ position: "absolute", zIndex: 300, top: 0 }}>
 					<Typography variant="h3" style={{ textAlign: "center", fontFamily: `'Rampart One', cursive` }}>
 						BULLYVAXX
 					</Typography>
 					<Box component={"span"} sx={{ display: { xs: "none", sm: "block" } }}>
 						<Typography variant="h4" style={{ textAlign: "center" }}>
-							Two Important Vaccines Have Been Developed; One for the Coronavirus Pandemic and One for the
-							Bullying Epidemic
+							Two Important Vaccines Have Been Developed; One for the Coronavirus Pandemic and One for the Bullying Epidemic
 						</Typography>
 					</Box>
 				</div>
 				<Box component={"span"} sx={{ display: { xs: "block", sm: "none" } }}>
 					<Typography style={{ textAlign: "center" }}>
-						Two Important Vaccines Have Been Developed; One for the Coronavirus Pandemic and One for the Bullying
-						Epidemic
+						Two Important Vaccines Have Been Developed; One for the Coronavirus Pandemic and One for the Bullying Epidemic
 					</Typography>
 				</Box>
 			</Box>
@@ -108,12 +102,7 @@ const Home: FunctionComponent<HomeProps> = () => {
 			<Box component={"div"} sx={{ width: "100%" }}>
 				<div style={{ textAlign: "center", marginBottom: "4%" }}>
 					<Link to="/login" style={{ textDecoration: "none" }}>
-						<Button
-							color="primary"
-							size="large"
-							variant="outlined"
-							style={{ borderRadius: "0", cursor: "pointer" }}
-						>
+						<Button color="primary" size="large" variant="outlined" style={{ borderRadius: "0", cursor: "pointer" }}>
 							Report Bullying, School Shooter Threats or a Weapon in the School
 							{/* REPORT BULLYING, SCHOOL SHOOTER THREATS OR A WEAPON IN THE SCHOOL submit bully report */}
 						</Button>
@@ -134,7 +123,7 @@ const Home: FunctionComponent<HomeProps> = () => {
 								</Link>
 							</div> */}
 							<iframe
-								src="https://drive.google.com/file/d/1IIlskaDsSLW4-JIHcFyTfLzlEWDoW3_a/preview"
+								src="https://drive.google.com/file/d/1T3cpfUytRbxGKOKjHXQe_jo_2skCXRVU/preview"
 								width="100%"
 								height="500"
 								allow="autoplay"
@@ -172,33 +161,12 @@ const Home: FunctionComponent<HomeProps> = () => {
 						<Grid item xs={12} sm={4}>
 							<Box component={"div"} sx={{ width: "100%", p: 1 }}>
 								<FeedbackForm>
-									<Form
-										initialValues={{ form: { username: "" } }}
-										buttonText="submit"
-										buttonSize="medium"
-										submit={() => {}}
-									>
+									<Form initialValues={{ form: { username: "" } }} buttonText="submit" buttonSize="medium" submit={() => {}}>
 										<FormFieldWrapper>
-											<InputField
-												size="small"
-												color="secondary"
-												fullWidth={true}
-												name="name"
-												type="text"
-												variant="outlined"
-												label="Full Name"
-											/>
+											<InputField size="small" color="secondary" fullWidth={true} name="name" type="text" variant="outlined" label="Full Name" />
 										</FormFieldWrapper>
 										<FormFieldWrapper>
-											<InputField
-												size="small"
-												color="secondary"
-												fullWidth={true}
-												name="email"
-												type="email"
-												variant="outlined"
-												label="Email"
-											/>
+											<InputField size="small" color="secondary" fullWidth={true} name="email" type="email" variant="outlined" label="Email" />
 										</FormFieldWrapper>
 										<FormFieldWrapper>
 											<InputField
