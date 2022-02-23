@@ -6,7 +6,7 @@ import Axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
 import SearchIcon from "@mui/icons-material/Search";
 import GenericModal from "../components/Modal";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -37,10 +37,11 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	const [sponsorshipPrice] = React.useState(84);
 	const [openModal, setOpenModal] = React.useState(false);
 	const [schoolsArray, setSchoolsArray] = React.useState([
-		{ name: "school1_name", zip_code: "school1_zip_code" },
-		{ name: "school2_name", zip_code: "school2_zip_code" },
-		{ name: "school3_name", zip_code: "school3_zip_code" },
+		// { name: "school1_name", zip_code: "school1_zip_code" },
+		// { name: "school2_name", zip_code: "school2_zip_code" },
+		// { name: "school3_name", zip_code: "school3_zip_code" },
 	] as SchoolInfo[]);
+	const params = useParams();
 	const [formSchema, setFormSchema] = React.useState({
 		type: "Individual",
 		entity_name: "",
@@ -50,12 +51,12 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		county: "",
 		email: "",
 		username: "",
-		school1_name: "",
-		school1_zip_code: "",
-		school2_name: "",
-		school2_zip_code: "",
-		school3_name: "",
-		school3_zip_code: "",
+		// school1_name: "",
+		// school1_zip_code: "",
+		// school2_name: "",
+		// school2_zip_code: "",
+		// school3_name: "",
+		// school3_zip_code: "",
 		quantity: schoolsArray.length,
 		schoolsArray,
 	});
@@ -166,31 +167,72 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	};
 
 	let createUser = async (reqBody: any) => {
-		setUserDetails(reqBody);
+		let schoolArr: any[] = [];
+		const allKeys = Object.keys(reqBody);
+		let count = 0;
+		allKeys.forEach((i) => {
+			if (i.includes("_") && i.startsWith("school")) count += 1;
+		});
 
-		setLoading(true);
+		count = count / 2;
+		let currentNum = 0;
+
+		for (let index = 1; index <= count; index++) {
+			currentNum += 1;
+			schoolArr.push({
+				name: reqBody[`school${currentNum}_name`],
+				zip_code: reqBody[`school${currentNum}_zip_code`],
+			});
+		}
+
+		const userInfo = {
+			"first_name": reqBody.first_name,
+			"last_name": reqBody.last_name,
+			"email": reqBody.email,
+			"quantity": schoolArr.length,
+			"username": "",
+			"role": "SPONSOR",
+		};
+
+		let finalPass: any[] = [];
+		schoolArr.forEach((v) => {
+			if (v.name) finalPass.push(v);
+		});
+
+		schoolArr = finalPass;
+		const sponsorForm = {
+			"userInfo": userInfo,
+			"form": {
+				"schoolsArray": schoolArr,
+			},
+		};
+
+		if (!schoolArr.length) {
+			console.log("You have not sponsore any school");
+			return;
+		}
+
+		localStorage.setItem("sponsoredSchool", JSON.stringify(sponsorForm));
+		const price = { "price": schoolArr };
+		console.log(price);
+		// return;
 		try {
+			setLoading(true);
+			console.log(reqBody);
 			let res = await Axios({
 				method: "post",
-				url: `${url + "/users/create-user"}`,
-				data: reqBody,
+				url: `${url + "/users/create/user/payment"}`,
+				// url: `${url + "/sponsorships"}`,
+				data: price,
 			});
-
-			createSponsorship(reqBody);
-			setResponse(res.data);
-			setCanCheckout(true);
-
-			setLoading(false);
-			setMessageType("success");
-			setModalContent(<p>{res.data.message}</p>);
-			setOpenModal(true);
+			console.log(res);
+			window.open(res.data.url, "_blank");
 		} catch (error: any) {
 			console.log(error.response);
 			setResponse(error.response);
-			setLoading(false);
 			setMessageType("error");
-			setModalContent(<p>{error?.response?.data?.message}</p>);
-			setOpenModal(true);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -213,9 +255,9 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 			setModalContent(<p>Sponsorships purchase successful!</p>);
 			setOpenModal(true);
 			setSchoolsArray([
-				{ name: "school1_name", zip_code: "school1_zip_code" },
-				{ name: "school2_name", zip_code: "school2_zip_code" },
-				{ name: "school3_name", zip_code: "school3_zip_code" },
+				// { name: "school1_name", zip_code: "school1_zip_code" },
+				// { name: "school2_name", zip_code: "school2_zip_code" },
+				// { name: "school3_name", zip_code: "school3_zip_code" },
 			]);
 			setFormSchema({
 				type: "Individual",
@@ -226,12 +268,12 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 				county: "",
 				email: "",
 				username: "",
-				school1_name: "",
-				school1_zip_code: "",
-				school2_name: "",
-				school2_zip_code: "",
-				school3_name: "",
-				school3_zip_code: "",
+				// school1_name: "",
+				// school1_zip_code: "",
+				// school2_name: "",
+				// school2_zip_code: "",
+				// school3_name: "",
+				// school3_zip_code: "",
 				quantity: schoolsArray.length,
 				schoolsArray,
 			});
@@ -247,6 +289,10 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	};
 
 	useEffect(() => {
+		let getId: any = params;
+		if (getId.id === "success") console.log("successful payment");
+		if (getId.id === "cancel") console.log("unsuccessful payment");
+
 		let abortController = new AbortController();
 		fetchContent({ page: selectedPage, tab: "" });
 		return () => {
@@ -433,12 +479,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 								<FormFieldWrapper>
 									<InputField size="small" color="secondary" fullWidth={true} name="email" type="email" variant="outlined" label="Email" />
 								</FormFieldWrapper>
-								{/* <FormFieldWrapper>
-                                <InputField size="small" color="secondary" selectionChange={handleSelection} isSelect={true} fullWidth={true} name="state" selectOptions={states} variant="outlined" label="Select your state" />
-                            </FormFieldWrapper>
-                            <FormFieldWrapper>
-                                <InputField size="small" color="secondary" isSelect={true} fullWidth={true} name="county" selectOptions={counties} variant="outlined" label="Select your county" />
-                            </FormFieldWrapper> */}
+
 								{schoolsArray.map((school, index) => (
 									<div key={index}>
 										<FormFieldWrapper>

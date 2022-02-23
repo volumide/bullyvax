@@ -187,11 +187,14 @@ const Reports: FunctionComponent<ReportsProps> = () => {
 
 		let data = {
 			from: "info@bullyvaxx.com",
-			recipient: reqBody.admin_email,
+			to: reqBody.admin_email,
 			subject: "Bullying Report",
-			text: "",
-			htmlBody: template,
+			text: "Bullying Report",
+			html: template,
 		};
+
+		console.log(data);
+		// return;
 
 		try {
 			let res = await Axios({

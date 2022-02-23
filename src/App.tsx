@@ -25,6 +25,7 @@ import SchoolAdministrators from "./views/SchoolAdministrators";
 import AsianAmericanStudents from "./views/AsianAmericanStudents";
 import YouCanHelp from "./views/YouCanHelp";
 import ContactUs from "./views/ContactUs";
+import Success from "./views/Success";
 
 const theme = createTheme({
 	palette: {
@@ -63,29 +64,24 @@ function App() {
 							<div style={{ minHeight: "50vh" }}>
 								<Switch>
 									<Route exact component={Home} path="/" />
+									{/* <Route exact component={Success} path="/success" /> */}
 									<Route exact component={About} path="/about" />
 									<Route exact component={Faq} path="/faq" />
-									<Route exact component={Sponsors} path="/sponsors" />
+									<Route exact component={Sponsors} path="/sponsors/:id" />
+									{/* <Route exact component={Sponsors} path="/success" /> */}
+									{/* <Route exact component={Sponsors} path="/canceled" /> */}
 									<ProtectedRoute exact component={Reports} path="/dashboard/forms" />
 									<ProtectedRoute exact component={Admin} path="/dashboard/admin" />
 									<Route exact component={Login} path="/login" />
 									<Route exact component={Signup} path="/signup" />
 									<ProtectedRoute exact component={ManageReports} path="/dashboard/reports" />
 									<ProtectedRoute exact component={ManageUsers} path="/dashboard/users" />
-									<ProtectedRoute
-										exact
-										component={Sponsorships}
-										path="/dashboard/sponsorships"
-									/>
+									<ProtectedRoute exact component={Sponsorships} path="/dashboard/sponsorships" />
 									<Route exact component={MessageToBullies} path="/bullies" />
 									<Route exact component={MessageToMoms} path="/moms" />
 									<Route exact component={BullyingExperience} path="/experience" />
 									<Route exact component={SchoolAdministrators} path="/administrators" />
-									<Route
-										exact
-										component={AsianAmericanStudents}
-										path="/asian-american-students"
-									/>
+									<Route exact component={AsianAmericanStudents} path="/asian-american-students" />
 									<Route exact component={ContactUs} path="/contact" />
 									<Route exact component={BullyPolicy} path="/bully-policy" />
 									<Route exact component={YouCanHelp} path="/you-can-help" />

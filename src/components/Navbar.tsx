@@ -290,7 +290,7 @@ export default function NavBar(props: NavBarProps) {
 
 	const TopNavLinks: INavLink[] = [
 		{ text: "HOME", link: "", auth: true },
-		{ text: "SPONSOR A SCHOOL", link: "/sponsors", auth: true },
+		{ text: "SPONSOR A SCHOOL", link: "/sponsors/create", auth: true },
 		{ text: "YOUR BULLYING EXPERIENCE", link: "/experience", auth: true },
 	].filter((link) => link.auth);
 
