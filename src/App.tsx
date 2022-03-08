@@ -25,7 +25,6 @@ import SchoolAdministrators from "./views/SchoolAdministrators";
 import AsianAmericanStudents from "./views/AsianAmericanStudents";
 import YouCanHelp from "./views/YouCanHelp";
 import ContactUs from "./views/ContactUs";
-import Success from "./views/Success";
 
 const theme = createTheme({
 	palette: {

@@ -36,12 +36,9 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	const [userDetails, setUserDetails] = React.useState({} as any);
 	const [sponsorshipPrice] = React.useState(84);
 	const [openModal, setOpenModal] = React.useState(false);
-	const [schoolsArray, setSchoolsArray] = React.useState([
-		// { name: "school1_name", zip_code: "school1_zip_code" },
-		// { name: "school2_name", zip_code: "school2_zip_code" },
-		// { name: "school3_name", zip_code: "school3_zip_code" },
-	] as SchoolInfo[]);
+	const [schoolsArray, setSchoolsArray] = React.useState([] as SchoolInfo[]);
 	const params = useParams();
+	const [successMessage, setSuccessMessage] = React.useState("");
 	const [formSchema, setFormSchema] = React.useState({
 		type: "Individual",
 		entity_name: "",
@@ -51,12 +48,6 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		county: "",
 		email: "",
 		username: "",
-		// school1_name: "",
-		// school1_zip_code: "",
-		// school2_name: "",
-		// school2_zip_code: "",
-		// school3_name: "",
-		// school3_zip_code: "",
 		quantity: schoolsArray.length,
 		schoolsArray,
 	});
@@ -72,10 +63,6 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	} else if (process.env.NODE_ENV === "production") {
 		url = `${process.env.REACT_APP_PRODUCTION}`;
 	}
-
-	// let handleSelection = (selected: SelectOption) => {
-	//     setSelectedState(selected.value);
-	// };
 
 	let handleSponsorTypeSelection = (selected: string) => {
 		setSponsorType(selected);
@@ -115,37 +102,6 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		}
 	};
 
-	// let getCounties = async (selectedState: string) => {
-	//     setLoading(true);
-	//     try {
-	//         let res = await Axios({
-	//             method: 'get',
-	//             url: `https://api.census.gov/data/2017/pep/population?get=POP,GEONAME&for=county:*&in=state:${selectedState}&key=8ea19e5ad6a8d3f6f527ef60f677f2e6586178f1`,
-	//         });
-
-	//         console.log('res.data', res.data, states, loading);
-
-	//         // setCounties(res.data.map((stateInfo: any[], index: number): SelectOption => {
-	//         //     let state = {
-	//         //         label: stateInfo[1],
-	//         //         value: stateInfo[1]
-	//         //     }
-
-	//         //     if (index === 0) {
-	//         //         state.label = 'Choose your County';
-	//         //         state.value = '';
-	//         //     }
-
-	//         //     return state;
-	//         // }));
-	//         setLoading(false);
-	//     } catch (error: any) {
-	//         console.log(error.response);
-	//         // setCounties([]);
-	//         setLoading(false);
-	//     }
-	// };
-
 	let fetchContent = async (q: { page?: string; tab?: string }) => {
 		setLoading(true);
 		try {
@@ -167,6 +123,8 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	};
 
 	let createUser = async (reqBody: any) => {
+		console.log(reqBody);
+		// return;
 		let schoolArr: any[] = [];
 		const allKeys = Object.keys(reqBody);
 		let count = 0;
@@ -188,6 +146,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		const userInfo = {
 			"first_name": reqBody.first_name,
 			"last_name": reqBody.last_name,
+			"entity_name": reqBody.entity_name,
 			"email": reqBody.email,
 			"quantity": schoolArr.length,
 			"username": "",
@@ -289,10 +248,6 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 	};
 
 	useEffect(() => {
-		let getId: any = params;
-		if (getId.id === "success") console.log("successful payment");
-		if (getId.id === "cancel") console.log("unsuccessful payment");
-
 		let abortController = new AbortController();
 		fetchContent({ page: selectedPage, tab: "" });
 		return () => {
@@ -300,6 +255,7 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		};
 		// eslint-disable-next-line
 	}, [selectedPage]);
+
 	useEffect(() => {
 		let abortController = new AbortController();
 		getStates();
@@ -309,12 +265,38 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 		// eslint-disable-next-line
 	}, []);
 
-	// useEffect(() => {
-	//     let abortController = new AbortController();
-	//     getCounties(selectedState);
-	//     return () => { abortController.abort(); };
-	//     // eslint-disable-next-line
-	// }, [selectedState]);
+	const createOnLoad = async () => {
+		let getId: any = params;
+		if (getId.id === "success") {
+			const data: any = localStorage.getItem("sponsoredSchool");
+			const retData: any = JSON.parse(data);
+			try {
+				let res = await Axios({
+					method: "post",
+					url: `${url + "/sponsorships"}`,
+					data: retData,
+				});
+				console.log(res);
+				let message = "";
+				retData.form.schoolsArray.forEach((v: any) => {
+					message += v.name + ",";
+				});
+
+				setSuccessMessage("Thanks for successful sponsor of " + message + "school");
+				localStorage.removeItem("sponsoredSchool");
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		if (getId.id === "cancel") {
+			setSuccessMessage("Sponsor not successful ");
+			console.log("unsuccessful payment");
+		}
+	};
+
+	useEffect(() => {
+		createOnLoad();
+	}, []);
 
 	let buySponsorship = (userInfo: any) => {
 		createSponsorship({ userInfo, form: userDetails });
@@ -387,7 +369,9 @@ const Sponsors: FunctionComponent<SponsorsProps> = () => {
 				<Grid item sm={8} xs={12}>
 					<Box sx={{ marginTop: "4%", padding: "2%" }}>
 						<Grid container spacing={2}>
-							<Grid item sm={3}></Grid>
+							<Grid item sm={3}>
+								{successMessage}
+							</Grid>
 							<Grid item sm={6} xs={12}>
 								<iframe
 									style={{ marginBottom: "20px" }}
