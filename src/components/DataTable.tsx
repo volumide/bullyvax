@@ -19,14 +19,14 @@ const DataTable: FunctionComponent<DataTableProps> = ({ columns, rows, defaultSo
 	]);
 
 	return (
-		<div style={{ height: 400, width: "100%" }}>
+		<div style={{ height: 500, width: "100%" }}>
 			{columns && rows && (
 				<DataGrid
 					editMode="row"
 					rows={rows}
 					columns={columns}
-					pageSize={5}
-					rowsPerPageOptions={[5]}
+					pageSize={15}
+					rowsPerPageOptions={[15]}
 					sortModel={sortModel}
 					onSortModelChange={(model) => setSortModel(model)}
 					disableExtendRowFullWidth

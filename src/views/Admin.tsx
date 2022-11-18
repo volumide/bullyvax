@@ -155,6 +155,18 @@ const Admin: FunctionComponent<AdminProps> = (props: AdminProps) => {
 											label: "Bully Discipline Policy",
 											value: "Bully Discipline Policy",
 										},
+										{
+											label: "School Shooter",
+											value: "School Shooter",
+										},
+										{
+											label: "Request Report",
+											value: "Request Report",
+										},
+										{
+											label: "Bully Free",
+											value: "Bully Free",
+										},
 									]}
 									variant="outlined"
 									label="Select page"

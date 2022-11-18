@@ -107,6 +107,9 @@ const ManageUsers: FunctionComponent<ManageUsersProps> = () => {
 			let res = await Axios({
 				method: "get",
 				url: `${url + "/users/fetch"}`,
+				headers: {
+					"Authorization": "Bearer" + localStorage.getItem("app_id"),
+				},
 			});
 
 			console.log("res.data", res.data, response, loading);

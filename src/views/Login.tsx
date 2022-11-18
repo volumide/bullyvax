@@ -22,6 +22,7 @@ const Login: FunctionComponent<LoginProps> = (props: LoginProps) => {
 	let url: string;
 
 	if (process.env.NODE_ENV === "development") {
+		// url = `${process.env.REACT_APP_PRODUCTION}`;
 		url = `${process.env.REACT_APP_DEV_BACKEND}`;
 	} else if (process.env.NODE_ENV === "production") {
 		url = `${process.env.REACT_APP_PRODUCTION}`;
@@ -47,8 +48,8 @@ const Login: FunctionComponent<LoginProps> = (props: LoginProps) => {
 				userRole = decodedToken.role;
 
 				localStorage.setItem("user_id", userRole);
+				localStorage.setItem("id", decodedToken.sub);
 			}
-
 			setLoading(false);
 
 			if (userRole === "ADMIN") {
@@ -78,15 +79,7 @@ const Login: FunctionComponent<LoginProps> = (props: LoginProps) => {
 					<Typography variant="h4">Sign in to your account</Typography>
 					<Form initialValues={{ username: "", password: "" }} buttonText="sign in" buttonSize="medium" submit={login}>
 						<FormFieldWrapper>
-							<InputField
-								size="small"
-								color="secondary"
-								fullWidth={true}
-								name="username"
-								type="text"
-								variant="outlined"
-								label="Username"
-							/>
+							<InputField size="small" color="secondary" fullWidth={true} name="username" type="text" variant="outlined" label="Username" />
 						</FormFieldWrapper>
 						<FormFieldWrapper>
 							<InputField
@@ -101,9 +94,7 @@ const Login: FunctionComponent<LoginProps> = (props: LoginProps) => {
 						</FormFieldWrapper>
 						{/* <Typography variant="body2" color="error">{response?.data?.message}</Typography> */}
 					</Form>
-					{response?.data?.message && (
-						<AlertSnackBar severity="error" message={response?.data?.message}></AlertSnackBar>
-					)}
+					{response?.data?.message && <AlertSnackBar severity="error" message={response?.data?.message}></AlertSnackBar>}
 					<Typography component={"p"}>
 						If you do not have an account, sign up <Link to="/signup">here</Link>.
 					</Typography>

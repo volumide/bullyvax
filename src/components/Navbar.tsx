@@ -5,14 +5,10 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
-// import Badge from '@mui/material/Badge';
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-// import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from "@mui/icons-material/AccountCircle";
-// import MailIcon from '@mui/icons-material/Mail';
-// import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import Divider from "@mui/material/Divider";
@@ -26,6 +22,7 @@ import { Button, Fab, useScrollTrigger, Zoom } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { setInterval } from "timers";
+import Typography from "@mui/material/Typography";
 
 export const Search = styled("div")(({ theme }) => ({
 	position: "relative",
@@ -144,6 +141,7 @@ export default function NavBar(props: NavBarProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 	const [navMoreEl, setNavMoreEl] = React.useState<null | HTMLElement>(null);
+	const [mobileMenu, setMobileMenu] = React.useState<null | HTMLElement>(null);
 	const [logged, setLogged] = React.useState<boolean>(false);
 	const { window } = props;
 	const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -151,6 +149,13 @@ export default function NavBar(props: NavBarProps) {
 	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 	const isMoreMenuOpen = Boolean(navMoreEl);
+	const isMobileGenMenuOpen = Boolean(mobileMenu);
+
+	const handleGenMenuClose = () => {
+		setMobileMenu(null);
+	};
+
+	const mobileGenMenuId = "menu";
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen);
@@ -181,6 +186,10 @@ export default function NavBar(props: NavBarProps) {
 		setNavMoreEl(null);
 	};
 
+	const handleGenMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+		setMobileMenu(event?.currentTarget);
+	};
+
 	let history = useHistory();
 
 	const menuId = "primary-search-account-menu";
@@ -200,15 +209,6 @@ export default function NavBar(props: NavBarProps) {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>
-				<MenuLink
-					activeStyle={{ background: "transparent" }}
-					style={{ color: "#000" }}
-					to={auth.confirmAdminAuth() ? "/dashboard/admin" : "/dashboard/forms"}
-				>
-					My account
-				</MenuLink>
-			</MenuItem>
 			<MenuItem
 				onClick={() =>
 					auth.logout(() => {
@@ -241,27 +241,19 @@ export default function NavBar(props: NavBarProps) {
 			open={isMobileMenuOpen}
 			onClose={handleMobileMenuClose}
 		>
-			{/* <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem> */}
-			{/* <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem> */}
-			<MenuItem onClick={handleProfileMenuOpen}>
+			<MenuItem
+				onClick={() =>
+					auth.logout(() => {
+						localStorage.removeItem("app_id");
+						localStorage.removeItem("user_id");
+						history.push("/");
+						handleMenuClose();
+					})
+				}
+			>
+				Logout
+			</MenuItem>
+			{/* <MenuItem onClick={handleProfileMenuOpen}>
 				<IconButton
 					size="large"
 					aria-label="account of current user"
@@ -272,7 +264,7 @@ export default function NavBar(props: NavBarProps) {
 					<AccountCircle />
 				</IconButton>
 				<p>Profile</p>
-			</MenuItem>
+			</MenuItem> */}
 		</Menu>
 	);
 
@@ -291,19 +283,62 @@ export default function NavBar(props: NavBarProps) {
 	const TopNavLinks: INavLink[] = [
 		{ text: "HOME", link: "", auth: true },
 		{ text: "SPONSOR A SCHOOL", link: "/sponsors/create", auth: true },
-		{ text: "YOUR BULLYING EXPERIENCE", link: "/experience", auth: true },
+		{ text: "MESSAGE TO MOMS", link: "/moms", auth: true },
+		// { text: "YOUR BULLYING EXPERIENCE", link: "/experience", auth: true },
+		{ text: "YOU CAN HELP", link: "/you-can-help", auth: true },
+		{ text: "SCHOOL SHOOTER", link: "/school-shooter", auth: true },
+		{ text: "REQUEST REPORT", link: "/request/report/form", auth: true },
 	].filter((link) => link.auth);
 
 	const TopNavMoreLinks: INavLink[] = [
 		{ text: "SCHOOL ADMINISTRATORS", link: "/administrators", auth: true },
 		{ text: "ASIAN AMERICAN STUDENTS", link: "/asian-american-students", auth: true },
-		{ text: "FAQs", link: "/faq", auth: true },
-		{ text: "MESSAGE TO MOMS", link: "/moms", auth: true },
-		{ text: "MESSAGE TO BULLIES", link: "/bullies", auth: true },
+		{ text: "BULLY-FREE SCHOOL", link: "/bully-free", auth: true },
+		{ text: "REQUEST BULLY REPORTS", link: "/request-report", auth: true },
+		// { text: "MESSAGE TO MOMS", link: "/moms", auth: true },
+		// { text: "MESSAGE TO BULLIES", link: "/bullies", auth: true },
+		{ text: "BULLYVAXX DISCIPLINE POLICY", link: "/bully-policy", auth: true },
 		{ text: "ABOUT US", link: "/about", auth: true },
 		{ text: "CONTACT US", link: "/contact", auth: true },
-		{ text: "BULLY POLICY", link: "/bully-policy", auth: true },
+		{ text: "FAQs", link: "/faq", auth: true },
 	].filter((link) => link.auth);
+
+	const renderGeneralMenu = (
+		<Menu
+			anchorEl={mobileMenu}
+			anchorOrigin={{
+				vertical: "top",
+				horizontal: "left",
+			}}
+			id={mobileGenMenuId}
+			keepMounted
+			transformOrigin={{
+				vertical: "top",
+				horizontal: "right",
+			}}
+			open={isMobileGenMenuOpen}
+			onClose={handleGenMenuClose}
+		>
+			{TopNavLinks.map((link, index: number) => (
+				<MenuItem onClick={handleGenMenuClose}>
+					<NavLink
+						activeStyle={{ borderBottom: "solid #F44336 5px" }}
+						style={{ textDecoration: "none", color: "#000" }}
+						exact={true}
+						key={index}
+						to={link.link}
+					>
+						{link.text}
+					</NavLink>
+				</MenuItem>
+			))}
+			<MenuItem>
+				<NavLink onClick={handleMoreMenuOpen} to="#" activeStyle={{ background: "transparent" }} style={{ textDecoration: "none", color: "#000" }}>
+					MORE
+				</NavLink>
+			</MenuItem>
+		</Menu>
+	);
 
 	const drawer = (
 		<div>
@@ -343,6 +378,7 @@ export default function NavBar(props: NavBarProps) {
 	return (
 		<React.Fragment>
 			<ElevationScroll {...props}>
+				{/* <CssBaseline /> */}
 				<AppBar
 					position="sticky"
 					sx={{
@@ -353,6 +389,11 @@ export default function NavBar(props: NavBarProps) {
 					elevation={0}
 				>
 					<Toolbar id="back-to-top-anchor">
+						<Box sx={{ mr: 2, display: { xs: "block", sm: "block" } }}>
+							<Link to="/">
+								<img style={{ width: "70px", marginLeft: "auto", marginRight: "auto" }} alt="logo" src={"logo.png"} />
+							</Link>
+						</Box>
 						{logged ? (
 							<IconButton
 								size="large"
@@ -360,35 +401,32 @@ export default function NavBar(props: NavBarProps) {
 								color="inherit"
 								aria-label="open drawer"
 								onClick={handleDrawerToggle}
-								sx={{ mr: 2, display: { lg: "none", md: "none" } }}
+								sx={{ mr: 2, display: { sm: "none" } }}
 							>
 								<MenuIcon />
 							</IconButton>
 						) : null}
-						<Box sx={{ display: { xs: "none", sm: "block" } }}>
-							<Link to="/">
-								<img style={{ width: "70px", marginLeft: "auto", marginRight: "auto" }} alt="logo" src={"logo.png"} />
-							</Link>
+						<Box sx={{ display: { xs: "block", sm: "none" }, mr: 2 }}>
+							<Typography
+								// variant="p"
+								noWrap
+								// edge="end"
+								component="div"
+								onClick={handleGenMenuOpen}
+								aria-controls={mobileGenMenuId}
+								aria-haspopup="true"
+							>
+								MENU
+							</Typography>
 						</Box>
 
-						{/* <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Student's username…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search> */}
 						<Box sx={{ display: { xs: "none", sm: "none", md: "block", width: "100%" } }}>
 							{TopNavLinks.map((link, index: number) => (
 								<NavBarLink activeStyle={{ borderBottom: "solid #F44336 5px" }} exact={true} key={index} to={link.link}>
 									{link.text}
 								</NavBarLink>
 							))}
-							<NavBarLink activeStyle={{ borderBottom: "solid #F44336 5px" }} exact={true} key="1000" to="you-can-help">
-								YOU CAN HELP
-							</NavBarLink>
+
 							<NavBarLink onClick={handleMoreMenuOpen} to="#" activeStyle={{ background: "transparent" }}>
 								MORE <KeyboardArrowDownIcon style={{ position: "absolute" }} />
 							</NavBarLink>
@@ -413,52 +451,44 @@ export default function NavBar(props: NavBarProps) {
 						</Box>
 						<Box sx={{ flexGrow: 1 }} />
 						{!auth.confirmAuth() && !auth.confirmAdminAuth() && (
-							<Box sx={{ display: { xs: "none", sm: "none", md: "block", width: "150px" } }}>
-								<NavBarLink activeStyle={{ background: "transparent" }} exact={true} to="/login">
-									<Button variant="outlined">SIGN IN</Button>
-								</NavBarLink>
+							<Box sx={{ display: { xs: "block", sm: "block", md: "block" }, width: "150px" }}>
+								<NavLink activeStyle={{ background: "transparent" }} style={{ textDecoration: "none" }} exact={true} to="/login">
+									<Button variant="outlined" style={{ width: "100%" }}>
+										SIGN IN
+									</Button>
+								</NavLink>
 							</Box>
 						)}
 						<Box sx={{ display: { xs: "none", md: "flex" } }}>
-							{/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton> */}
-							{/* <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
-							{(auth.confirmAuth() || auth.confirmAdminAuth()) && (
-								<IconButton
-									size="large"
-									edge="end"
-									aria-label="account of current user"
-									aria-controls={menuId}
-									aria-haspopup="true"
-									onClick={handleProfileMenuOpen}
-									color="inherit"
-								>
-									<AccountCircle />
-								</IconButton>
-							)}
+							{auth.confirmAuth() ||
+								(auth.confirmAdminAuth() && (
+									<IconButton
+										size="large"
+										edge="end"
+										aria-label="account of current user"
+										aria-controls={menuId}
+										aria-haspopup="true"
+										onClick={handleProfileMenuOpen}
+										color="inherit"
+									>
+										<AccountCircle />
+									</IconButton>
+								))}
 						</Box>
 						<Box sx={{ display: { xs: "flex", md: "none" } }}>
-							<IconButton
-								size="large"
-								aria-label="show more"
-								aria-controls={mobileMenuId}
-								aria-haspopup="true"
-								onClick={handleMobileMenuOpen}
-								color="inherit"
-							>
-								<MoreIcon />
-							</IconButton>
+							{auth.confirmAuth() ||
+								(auth.confirmAdminAuth() && (
+									<IconButton
+										size="large"
+										aria-label="show more"
+										aria-controls={mobileMenuId}
+										aria-haspopup="true"
+										onClick={handleMobileMenuOpen}
+										color="inherit"
+									>
+										<MoreIcon />
+									</IconButton>
+								))}
 						</Box>
 					</Toolbar>
 				</AppBar>
@@ -486,14 +516,15 @@ export default function NavBar(props: NavBarProps) {
 					}}
 					open
 					variant="permanent"
-					anchor="left"
+					// anchor="left"
 				>
 					{drawer}
 				</Drawer>
 			</Box>
 			{renderMobileMenu}
 			{renderMenu}
-			<Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, marginLeft: `${drawerWidth}px` }}>
+			{renderGeneralMenu}
+			<Box component="main" sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, marginLeft: { sm: `${drawerWidth}px` } }}>
 				{children}
 			</Box>
 			<ScrollTop {...props}>
