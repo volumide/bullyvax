@@ -29,7 +29,7 @@ const Video: FunctionComponent<VideoProps> = () => {
   if (process.env.NODE_ENV === "development") {
     url = `${process.env.REACT_APP_DEV_BACKEND}`
   } else if (process.env.NODE_ENV === "production") {
-    url = `${process.env.REACT_APP_PRODUCTION}`
+    url = `https://bullyvax.onrender.com`
   }
 
   let fetchContent = async (q: { page?: string; tab?: string }) => {

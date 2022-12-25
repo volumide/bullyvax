@@ -133,7 +133,7 @@ const Reports: FunctionComponent<ReportsProps> = () => {
     url = `${process.env.REACT_APP_DEV_BACKEND}`
     // console.log(url);
   } else if (process.env.NODE_ENV === "production") {
-    url = `${process.env.REACT_APP_PRODUCTION}`
+    url = `https://bullyvax.onrender.com`
     console.log(url)
   }
 
@@ -478,7 +478,7 @@ const Reports: FunctionComponent<ReportsProps> = () => {
       url = `${process.env.REACT_APP_DEV_BACKEND}`
       // console.log(url);
     } else if (process.env.NODE_ENV === "production") {
-      url = `${process.env.REACT_APP_PRODUCTION}`
+      url = `https://bullyvax.onrender.com`
       console.log(url)
     }
   }, [])
