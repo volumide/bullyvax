@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box } from "@mui/system"
 import React, { FunctionComponent, useEffect, useState } from "react"
 import Form, { FRadioButton, InputField, SelectOption } from "../components/Form"

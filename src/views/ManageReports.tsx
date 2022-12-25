@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { GridColDef } from "@mui/x-data-grid"
 import Axios from "axios"
 import React, { FunctionComponent, useEffect } from "react"

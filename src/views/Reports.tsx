@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from "@emotion/styled"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"

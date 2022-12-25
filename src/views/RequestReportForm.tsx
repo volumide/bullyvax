@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-redeclare */
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import React, { FunctionComponent } from "react"

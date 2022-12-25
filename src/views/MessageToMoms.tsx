@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FunctionComponent, useEffect } from "react"
 import Axios from "axios"
 import Form, { InputField } from "../components/Form"
